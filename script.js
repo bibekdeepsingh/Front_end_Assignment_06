@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
     }
 
-    // Get aa cookie by name
+    // Get a cookie by name
     function getCookie(name) {
         const nameEQ = name + "=";
         const cookie = document.cookie.split(";");
