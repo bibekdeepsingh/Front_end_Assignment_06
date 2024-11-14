@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return null;
     }
 
-    // Check if username exists in cookies and uodate UI
+    // Check if username exists in cookies and update UI
     function checkUsername() {
         const username = getCookie("username");
         const usernameInput = document.getElementById("username");
@@ -179,4 +179,53 @@ document.addEventListener("DOMContentLoaded", function () {
         fetchQuestions();
         checkUsername(); 
     }
+
+    // calculate the score based on correct answers
+    function calculateScore() {
+        const selectedAnswers = document.querySelectorAll("input[type='radio']:checked");
+        let score = 0;
+
+        selectedAnswers.forEach((answer) => {
+            if (answer.hasAttribute("data-correct")) score += 1;
+        });
+
+        return score;
+    }
+    //save the score to localstorage
+    function saveScore(username, score) {
+        const score = JSON.parse(localStorage.getItem("scores")) || {};
+        scores[username] = score;
+        localStorage.setItem("scores", JSON.stringify(scores));
+    }
+
+    //call to display scores
+    function displayScores(){
+        const scores = JSON.parse(localStorage.getItem("scores")) || {};
+        const tbody = document.querySelector("#score-table tbody");
+        tbody.innerHTML = ""; //clear previous scores
+    
+        for (const [player, score] of Object.entries(scores)) {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>${player}</td><td>${score}</td>`;
+            tbody.appendChild(row);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.getElementById("trivia-form");
+        const newPlayerButton = document.getElementById("new-player");
+
+        checkUsername();
+        fetchQuestions();
+        displayScores();
+
+        form.addEventListener("submit", handleFormSubmit);
+        newPlayerButton.addEventListener("click", newPlayer);
+    });
+
+    
+    
+
+
+    
 });
