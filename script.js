@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function calculateScore() {
-        //... code for calculating score
+        //... code for calculating the score
             const selectedAnswers = document.querySelectorAll("input[type='radio']:checked");
             let score = 0;
     
