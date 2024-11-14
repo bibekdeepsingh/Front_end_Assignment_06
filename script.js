@@ -103,66 +103,6 @@ document.addEventListener("DOMContentLoaded", function () {
     function handleFormSubmit(event) {
         event.preventDefault();
         //... form submission logic including setting cookies and calculating score
-    }
-    function checkUsername() {
-        //... code for checking if a username cookie is set and adjusting the UI
-    }
-    function setCookie(name, value, days) {
-        //... code for setting a cookie
-    }
-    function getCookie(name) {
-        //... code for retrieving a cookie
-    }
-    function saveScore(username, score) {
-        //... code for saving the score to localStorage
-    }
-    function newPlayer() {
-        //... code for clearing the username cookie and updating the UI
-    }
-    function calculateScore() {
-        //... code for calculating the score
-    }
-    function displayScores() {
-        //... code for displaying scores from localStorage
-    }
-
-    // Set a cookie with a specified name, value and expiration in days
-    function setCookie(name, value, days) {
-        const date = new Date();
-        date.setTime(date.getTime() + days * 24 * 60 * 60* 1000);
-        document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
-    }
-
-    // Get a cookie by name
-    function getCookie(name) {
-        const nameEQ = name + "=";
-        const cookie = document.cookie.split(";");
-        for (let cookie of cookies) {
-            while (cookie.charAt(0) === " ") cookie = cookie.substring(1);
-            if (cookie.indexOf(nameEQ) === 0) return cookie.substring(nameEQ.length);
-        }
-        return null;
-    }
-
-    // Check if username exists in cookies and update UI
-    function checkUsername() {
-        const username = getCookie("username");
-        const usernameInput = document.getElementById("username");
-        const newPlayerButton = document.getElementById("new-player");
-
-        if (username) {
-            usernameInput.classList.add("hidden");
-            newPlayerButton.classList.remove("hidden");
-        }
-        else{
-            usernameInput.classList.remove("hidden");
-            newPlayerButton.classList.add("hidden");
-        }
-    }
-
-    function handleFormSubmit(event) {
-        event.preventDefault();
-
         //Set Username
         const usernameInput = document.getElementById("username");
         const username = getCookie("username") || usernameInput.value;
@@ -180,29 +120,51 @@ document.addEventListener("DOMContentLoaded", function () {
         checkUsername(); 
     }
 
-    // calculate the score based on correct answers
-    function calculateScore() {
-        const selectedAnswers = document.querySelectorAll("input[type='radio']:checked");
-        let score = 0;
+    function checkUsername() {
+        //... code for checking if a username cookie is set and adjusting the UI
+        const username = getCookie("username");
+        const usernameInput = document.getElementById("username");
+        const newPlayerButton = document.getElementById("new-player");
 
-        selectedAnswers.forEach((answer) => {
-            if (answer.hasAttribute("data-correct")) score += 1;
-        });
-
-        return score;
+        if (username) {
+            usernameInput.classList.add("hidden");
+            newPlayerButton.classList.remove("hidden");
+        }
+        else{
+            usernameInput.classList.remove("hidden");
+            newPlayerButton.classList.add("hidden");
+        }
     }
-    //save the score to localstorage
+
+    function setCookie(name, value, days) {
+        //... code for setting a cookie
+        const date = new Date();
+        date.setTime(date.getTime() + days * 24 * 60 * 60* 1000);
+        document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
+    }
+
+    function getCookie(name) {
+        //... code for retrieving a cookie
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const cookie = document.cookie.split(";");
+            for (let cookie of cookies) {
+                while (cookie.charAt(0) === " ") cookie = cookie.substring(1);
+                if (cookie.indexOf(nameEQ) === 0) return cookie.substring(nameEQ.length);
+            }
+            return null;
+    }
+
     function saveScore(username, score) {
-        const score = JSON.parse(localStorage.getItem("scores")) || {};
+        const scores = JSON.parse(localStorage.getItem("scores")) || {};
         scores[username] = score;
         localStorage.setItem("scores", JSON.stringify(scores));
     }
 
-    //call to display scores
-    function displayScores(){
+    function displayScores() {
         const scores = JSON.parse(localStorage.getItem("scores")) || {};
         const tbody = document.querySelector("#score-table tbody");
-        tbody.innerHTML = ""; //clear previous scores
+        tbody.innerHTML = ""; // Clear previous scores
     
         for (const [player, score] of Object.entries(scores)) {
             const row = document.createElement("tr");
@@ -210,22 +172,64 @@ document.addEventListener("DOMContentLoaded", function () {
             tbody.appendChild(row);
         }
     }
-
-    document.addEventListener("DOMContentLoaded", function() {
+    
+    document.addEventListener("DOMContentLoaded", function () {
         const form = document.getElementById("trivia-form");
         const newPlayerButton = document.getElementById("new-player");
-
+    
         checkUsername();
         fetchQuestions();
-        displayScores();
-
+        saveScore();
+        displayScores(); // Display scores on load
+    
         form.addEventListener("submit", handleFormSubmit);
         newPlayerButton.addEventListener("click", newPlayer);
     });
+        
+    }
 
-    
-    
+    function newPlayer() {
+        //... code for clearing the username cookie and updating the UI
+        function checkUsername() {
+        const username = getCookie("username");
+        const usernameInput = document.getElementById("username");
+        const newPlayerButton = document.getElementById("new-player");
 
+        if (username) {
+            usernameInput.classList.add("hidden");
+            newPlayerButton.classList.remove("hidden");
+        }
+        else{
+            usernameInput.classList.remove("hidden");
+            newPlayerButton.classList.add("hidden");
+        }
+    }
 
+    function calculateScore() {
+        //... code for calculating the score
+            const selectedAnswers = document.querySelectorAll("input[type='radio']:checked");
+            let score = 0;
     
+            selectedAnswers.forEach((answer) => {
+                if (answer.hasAttribute("data-correct")) score += 1;
+            });
+    
+            return score;
+    }
+
+    function displayScores() {
+        //... code for displaying scores from localStorage
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("trivia-form");
+            const newPlayerButton = document.getElementById("new-player");
+        
+            checkUsername();
+            fetchQuestions();
+            displayScores(); // Display scores on load
+        
+            form.addEventListener("submit", handleFormSubmit);
+            newPlayerButton.addEventListener("click", newPlayer);
+        });
+    }
+}
 });
