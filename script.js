@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function displayScores() {
-        //... code for displaying scores from localStorage
+        //... code for displaying scores from the localStorage
         document.addEventListener("DOMContentLoaded", function () {
             const form = document.getElementById("trivia-form");
             const newPlayerButton = document.getElementById("new-player");
